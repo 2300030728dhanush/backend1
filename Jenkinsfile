@@ -13,8 +13,7 @@ pipeline {
         TOMCAT_PASS = 'admin'
 
         BACKEND_REPO = 'https://github.com/Anju8168/backendcrud.git'
-        FRONTEND_REPO = 'https://github.com/Anju8168/frontendcrud.git'
-
+        FRONTEND_REPO = 'https://github.com/2300030728dhanush/reactcicd.git'  // ✅ Use your actual frontend repo
         BACKEND_DIR = 'backend'
         FRONTEND_DIR = 'frontend'
 
@@ -51,8 +50,8 @@ pipeline {
                     bat "mkdir ${warDir}\\META-INF"
                     bat "mkdir ${warDir}\\WEB-INF"
 
-                    // ⚠️ React outputs to build/ (not dist/)
-                    bat "xcopy /E /Y /I \"${env.FRONTEND_DIR}\\build\\*\" \"${warDir}\\\""
+                    // ✅ Updated: Use Vite's dist/ output folder
+                    bat "xcopy /E /Y /I \"${env.FRONTEND_DIR}\\dist\\*\" \"${warDir}\\\""
 
                     bat "jar -cvf ${env.FRONTEND_WAR} -C ${warDir} ."
                 }
