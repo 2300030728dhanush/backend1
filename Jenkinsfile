@@ -12,12 +12,15 @@ pipeline {
         TOMCAT_USER = 'admin'
         TOMCAT_PASS = 'admin'
 
-        BACKEND_REPO = 'https://github.com/Anju8168/backendcrud.git'
-        FRONTEND_REPO = 'https://github.com/2300030728dhanush/reactcicd.git'  // ✅ Use your actual frontend repo
+        // ✅ Updated: Your correct frontend/backend GitHub repos
+        BACKEND_REPO = 'https://github.com/2300030728dhanush/backend1.git'
+        FRONTEND_REPO = 'https://github.com/2300030728dhanush/reactcicd.git'
+
         BACKEND_DIR = 'backend'
         FRONTEND_DIR = 'frontend'
 
-        BACKEND_WAR = 'backend/target/springapp1.war'
+        // ✅ Will match the actual WAR file name (change if needed)
+        BACKEND_WAR = 'backend/target/backend1.war'
         FRONTEND_WAR = 'frontend/frontapp1.war'
     }
 
@@ -50,9 +53,10 @@ pipeline {
                     bat "mkdir ${warDir}\\META-INF"
                     bat "mkdir ${warDir}\\WEB-INF"
 
-                    // ✅ Updated: Use Vite's dist/ output folder
+                    // ✅ React + Vite uses `dist` as output folder
                     bat "xcopy /E /Y /I \"${env.FRONTEND_DIR}\\dist\\*\" \"${warDir}\\\""
 
+                    // ✅ Create the WAR file
                     bat "jar -cvf ${env.FRONTEND_WAR} -C ${warDir} ."
                 }
             }
