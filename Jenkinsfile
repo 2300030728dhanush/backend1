@@ -4,7 +4,6 @@ pipeline {
     tools {
         jdk 'JDK_HOME'
         maven 'MAVEN_HOME'
-        nodejs 'NODE_HOME'
     }
 
     environment {
@@ -12,15 +11,13 @@ pipeline {
         TOMCAT_USER = 'admin'
         TOMCAT_PASS = 'admin'
 
-        // ✅ Updated: Your correct frontend/backend GitHub repos
-        BACKEND_REPO = 'https://github.com/2300030728dhanush/backend1.git'
-        FRONTEND_REPO = 'https://github.com/2300030728dhanush/reactcicd.git'
+        BACKEND_REPO = 'https://github.com/Anju8168/backendcrud.git'
+        FRONTEND_REPO = 'https://github.com/Anju8168/frontendcrud.git'
 
         BACKEND_DIR = 'backend'
         FRONTEND_DIR = 'frontend'
 
-        // ✅ Will match the actual WAR file name (change if needed)
-        BACKEND_WAR = 'backend/target/backend1.war'
+        BACKEND_WAR = 'backend/target/springapp1.war'
         FRONTEND_WAR = 'frontend/frontapp1.war'
     }
 
@@ -38,6 +35,10 @@ pipeline {
 
         stage('Build React Frontend') {
             steps {
+                script {
+                    def nodeHome = tool name: 'NODE_HOME', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+                    env.PATH = "${nodeHome}\\bin;${env.PATH}"
+                }
                 dir("${env.FRONTEND_DIR}") {
                     bat 'npm install'
                     bat 'npm run build'
@@ -52,11 +53,7 @@ pipeline {
                     bat "if exist ${warDir} rmdir /S /Q ${warDir}"
                     bat "mkdir ${warDir}\\META-INF"
                     bat "mkdir ${warDir}\\WEB-INF"
-
-                    // ✅ React + Vite uses `dist` as output folder
                     bat "xcopy /E /Y /I \"${env.FRONTEND_DIR}\\dist\\*\" \"${warDir}\\\""
-
-                    // ✅ Create the WAR file
                     bat "jar -cvf ${env.FRONTEND_WAR} -C ${warDir} ."
                 }
             }
@@ -65,7 +62,8 @@ pipeline {
         stage('Build Spring Boot App') {
             steps {
                 dir("${env.BACKEND_DIR}") {
-                    bat 'mvn clean package -DskipTests'
+                    bat 'mvn clean package'
+                    bat 'rename target\\*.war springapp1.war'
                 }
             }
         }
