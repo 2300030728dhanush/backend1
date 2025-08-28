@@ -5,21 +5,20 @@ pipeline {
         jdk 'JDK_HOME'
         maven 'MAVEN_HOME'
     }
+environment {
+    TOMCAT_URL = 'http://localhost:9090/manager/text'
+    TOMCAT_USER = 'admin'
+    TOMCAT_PASS = 'admin'
 
-    environment {
-        TOMCAT_URL = 'http://localhost:9090/manager/text'
-        TOMCAT_USER = 'admin'
-        TOMCAT_PASS = 'admin'
+    BACKEND_REPO = 'https://github.com/2300030728dhanush/backend1.git'
+    FRONTEND_REPO = 'https://github.com/2300030728dhanush/reactcicd.git'
 
-        BACKEND_REPO = 'https://github.com/Anju8168/backendcrud.git'
-        FRONTEND_REPO = 'https://github.com/Anju8168/frontendcrud.git'
+    BACKEND_DIR = 'backend'
+    FRONTEND_DIR = 'frontend'
 
-        BACKEND_DIR = 'backend'
-        FRONTEND_DIR = 'frontend'
-
-        BACKEND_WAR = 'backend/target/springapp1.war'
-        FRONTEND_WAR = 'frontend/frontapp1.war'
-    }
+    BACKEND_WAR = 'backend/target/springapp1.war'
+    FRONTEND_WAR = 'frontend/frontapp1.war'
+}
 
     stages {
         stage('Clone Repositories') {
